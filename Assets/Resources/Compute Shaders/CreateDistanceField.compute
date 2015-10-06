@@ -1,0 +1,31 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+uniform int _GridSize;
+uniform int _NumAtoms;
+
+RWTexture3D<float> _VolumeTexture;
+StructuredBuffer<float4> _SpherePositions;
+
+[numthreads(10,10,10)]
+void CSMain (uint3 id : SV_DispatchThreadID, uint3 groupThreadId : SV_GroupThreadID)
+{
+    float S = 0;
+	
+	for(int i = 0; i < _NumAtoms; i++)
+	{
+        float4 sphere = _SpherePositions[i];
+
+        float3 idd = id - (_GridSize * 0.5f);
+        float3 apt = sphere.xyz * 1.5;
+        float radius = sphere.w * 1.5;
+        float3 YD = idd - apt;
+        float r = dot(YD, YD);
+        float b = 0.7;
+        float a = -log(0.5f / b) / (radius * radius);
+        float gauss_f = b * exp(-(r * a)) * 0.5;
+        S += gauss_f;
+    }
+
+	_VolumeTexture[id] = S;
+}

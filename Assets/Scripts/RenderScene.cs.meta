@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 3fac9bc682eff05488990fb142246f53
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - compositeShader: {fileID: 4800000, guid: 7e4e2d5ceebf6e14795069de5e775e3d, type: 3}
+  - renderBackDepthShader: {fileID: 4800000, guid: 331e2ba5f7840c64d82d38ddea942a3c,
+      type: 3}
+  - rayMarchSurfaceShader: {fileID: 4800000, guid: 336880b6f7bed094381aae00dff61509,
+      type: 3}
+  - DepthNormalsBlitShader: {fileID: 4800000, guid: 324fc0595cbe6dd41a32767527a3a82f,
+      type: 3}
+  - InitVolume: {fileID: 7200000, guid: 8dacf0a056a131e418a5c7f5fd974771, type: 3}
+  - FillVolume: {fileID: 7200000, guid: 4e37f3dbd504a5d47bb3d320059434a1, type: 3}
+  - BlitVolume: {fileID: 7200000, guid: 1c22ac84d0b9f694183ace44866e8a35, type: 3}
+  - CubeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  executionOrder: 150
+  icon: {instanceID: 0}
+  userData: 
