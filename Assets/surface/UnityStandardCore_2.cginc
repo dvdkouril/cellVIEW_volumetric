@@ -958,7 +958,7 @@ VertexOutputDeferred vertDeferred (VertexInput v)
 	o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 	o.localPos = v.vertex;
 	o.worldPos = mul(_Object2World, v.vertex);
-	o.viewRay = mul(_World2Object, o.worldPos - _WorldSpaceCameraPos);
+	o.viewRay = mul(_World2Object, float4(o.worldPos - _WorldSpaceCameraPos, 0));
 	// RAY MARCHING CODE END
 
 	return o;

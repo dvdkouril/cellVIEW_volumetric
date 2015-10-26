@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: dcd21b4e79f12174fa158ed484460f36
+timeCreated: 1443549789
+licenseType: Pro
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - depthShader: {fileID: 4800000, guid: 41e72f467c7b6cf469624557c10e7463, type: 3}
+  - lightSphereMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  - PointNoShadows: {fileID: 2100000, guid: bf681e0704935154a8e8799d74383040, type: 2}
+  - PointHardShadows: {fileID: 2100000, guid: d8dcd539e9f7e114d9da7de634a0c741, type: 2}
+  - PointSoftShadows: {fileID: 2100000, guid: f0763f8d84659144aabaae3a2defe51e, type: 2}
+  - PointCookieNoShadows: {fileID: 2100000, guid: 28994914d78cbc74ab6a313b8bf701e7,
+      type: 2}
+  - PointCookieHardShadows: {fileID: 2100000, guid: 62904eddccdc05b409960e1de830174e,
+      type: 2}
+  - PointCookieSoftShadows: {fileID: 2100000, guid: 6c1a7807f0df2374aa3f77766bfc7158,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

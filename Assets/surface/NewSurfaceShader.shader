@@ -61,9 +61,10 @@
 			UNITY_INITIALIZE_OUTPUT(Input, o);
 
 			o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
-			o.localPos = v.vertex;
-			o.worldPos = mul(_Object2World, v.vertex);
-			o.viewRay = mul(_World2Object, o.worldPos - _WorldSpaceCameraPos);
+			o.localPos = v.vertex.xyz;
+			o.worldPos = mul(_Object2World, v.vertex).xyz;
+			//o.viewRay = mul(_World2Object, o.worldPos - _WorldSpaceCameraPos);
+			o.viewRay = mul(_World2Object, float4(o.worldPos - _WorldSpaceCameraPos, 0)).xyz;
 
 			//TRANSFER_VERTEX_TO_FRAGMENT(o); // shadows
 		}
@@ -133,7 +134,7 @@
 			float3 normal = get_normal(current_pos, texelSize);
 			float ndotl = max(0.0, dot(view_dir, normal));
 
-			color = float4(1, 1, 1, 1) * ndotl;
+			color = float4(1, 0, 0, 1);
 			//depth = get_depth(current_pos);
 		}
 
