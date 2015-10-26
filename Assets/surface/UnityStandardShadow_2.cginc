@@ -43,15 +43,15 @@ struct VertexInput
 	float2 uv0		: TEXCOORD0;
 };
 
-#ifdef UNITY_STANDARD_USE_SHADOW_OUTPUT_STRUCT
+
 struct VertexOutputShadowCaster
 {
-	V2F_SHADOW_CASTER_NOPOS
+	//V2F_SHADOW_CASTER_NOPOS
+	float3 vec : TEXCOORD0;
 	#if defined(UNITY_STANDARD_USE_SHADOW_UVS)
 		float2 tex : TEXCOORD1;
 	#endif
 };
-#endif
 
 
 // We have to do these dances of outputting SV_POSITION separately from the vertex shader,
@@ -59,11 +59,7 @@ struct VertexOutputShadowCaster
 // some platforms, and then things don't go well.
 
 
-void vertShadowCaster (VertexInput v,
-	#ifdef UNITY_STANDARD_USE_SHADOW_OUTPUT_STRUCT
-	out VertexOutputShadowCaster o,
-	#endif
-	out float4 opos : SV_POSITION)
+void vertShadowCaster (VertexInput v,out VertexOutputShadowCaster o, out float4 opos : SV_POSITION)
 {
 	TRANSFER_SHADOW_CASTER_NOPOS(o,opos)
 	#if defined(UNITY_STANDARD_USE_SHADOW_UVS)
@@ -71,13 +67,8 @@ void vertShadowCaster (VertexInput v,
 	#endif
 }
 
-half4 fragShadowCaster (
-	#ifdef UNITY_STANDARD_USE_SHADOW_OUTPUT_STRUCT
+half4 fragShadowCaster (	
 	VertexOutputShadowCaster i
-	#endif
-	#ifdef UNITY_STANDARD_USE_DITHER_MASK
-	, UNITY_VPOS_TYPE vpos : VPOS
-	#endif
 	) : SV_Target
 {
 	#if defined(UNITY_STANDARD_USE_SHADOW_UVS)
@@ -97,7 +88,10 @@ half4 fragShadowCaster (
 		#endif
 	#endif // #if defined(UNITY_STANDARD_USE_SHADOW_UVS)
 
-	SHADOW_CASTER_FRAGMENT(i)
+	//SHADOW_CASTER_FRAGMENT(i.)
+	float depth =  length(i.vec) * _LightPositionRange.w;
+	return float4(0, 0,0,0);
+	//return float4(0,0,0,0);
 }			
 
 #endif // UNITY_STANDARD_SHADOW_INCLUDED

@@ -1016,7 +1016,7 @@ void fragDeferred (
 	outNormal = half4(s.normalWorld*0.5+0.5,1);
 	outEmission = half4(color, 1);
 
-	// RAY MARCHING CODE start
+	// ----------------------------------------------------------------- RAY MARCHING CODE start
 
 	// Get back position from vertex shader
 	float3 front_pos = i.localPos;
@@ -1077,7 +1077,7 @@ void fragDeferred (
 	outNormal = (mul(_Object2World, float4(get_normal(current_pos, texelSize),1)));
 	//outNormal = float4(normalize(outNormal.xyz), 1);
 	outDepth = get_depth(current_pos);
-	outDiffuse = float4(1,0,0,0);
+	outDiffuse = float4(0.7,0,0,1);
 }
 
 
