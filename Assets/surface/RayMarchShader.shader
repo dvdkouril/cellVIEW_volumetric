@@ -15,7 +15,7 @@
 		{
 			CGPROGRAM
 // Upgrade NOTE: excluded shader from DX11 and Xbox360; has structs without semantics (struct v2f members localPos,worldPos,viewRay)
-#pragma exclude_renderers d3d11 xbox360
+//#pragma exclude_renderers d3d11 xbox360
 			#pragma vertex vert
 			#pragma fragment frag
 			
@@ -28,10 +28,10 @@
 
 			struct v2f
 			{
-				float4 pos : SV_POSITION;
-				float3 localPos;
-				float3 worldPos;
-				float3 viewRay;
+				float4 pos		: SV_POSITION;
+				float3 localPos : COLOR0;
+				float3 worldPos : COLOR1;
+				float3 viewRay	: COLOR2;
 			};
 			
 			sampler3D _VolumeTex;
@@ -76,7 +76,7 @@
 				//color = float4(0.321,0.123,0.321,1);
 			//}
 			
-			fixed4 frag (v2f i) : SV_Target
+			fixed4 frag (in v2f i) : SV_Target
 			{
 				// Get back position from vertex shader
 				float3 front_pos = i.localPos;

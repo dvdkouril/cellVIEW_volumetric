@@ -13,8 +13,6 @@
 		Pass // First Pass that writes depth values from light POV into shadow map
 		{
 			CGPROGRAM
-// Upgrade NOTE: excluded shader from DX11 and Xbox360; has structs without semantics (struct v2f members localPos,worldPos,viewRay)
-#pragma exclude_renderers d3d11 xbox360
 			#pragma vertex vert
 			#pragma fragment frag
 			
@@ -27,10 +25,10 @@
 
 			struct v2f
 			{
-				float4 pos : SV_POSITION;
-				float3 localPos;
-				float3 worldPos;
-				float3 viewRay;
+				float4 pos		: SV_POSITION;
+				float3 localPos : COLOR0;
+				float3 worldPos : COLOR1;
+				float3 viewRay	: COLOR2;
 			};
 			
 			sampler3D _VolumeTex;
@@ -70,7 +68,7 @@
 				return o;
 			}
 			
-			fixed4 frag (v2f i) : SV_Target
+			fixed4 frag (in v2f i) : SV_Target
 			{
 				// Get back position from vertex shader
 				float3 front_pos = i.localPos;
@@ -92,7 +90,7 @@
 				float3 last_pos;
 				float3 current_pos = front_pos;
 
-				float _NumSteps = 128;
+				uint _NumSteps = 128;
 				float delta_dir_length = 1 / _NumSteps;
 				float3 delta_dir = view_dir * delta_dir_length;
 
@@ -120,7 +118,7 @@
 				current_pos = last_pos + delta_dir;
 
 				// Binary search
-				for (uint i = 0; i < 4; i++)
+				for (uint j = 0; j < 4; j++)
 				{
 					delta_dir *= 0.5;
 					current_pos += (sample_volume(current_pos) >= _IntensityThreshold) ? -delta_dir : delta_dir;
