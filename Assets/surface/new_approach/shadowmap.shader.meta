@@ -1,0 +1,6 @@
+fileFormatVersion: 2
+guid: 99e1593e2049646539efd4dc3cd68ae1
+ShaderImporter:
+  defaultTextures:
+  - _ReflectionTex: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+  userData: 
