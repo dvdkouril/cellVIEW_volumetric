@@ -87,6 +87,24 @@
 				return Output;
 			}
 
+			// Custom texture lookup functions from http://codeflow.org/entries/2013/feb/15/soft-shadow-mapping/
+			float texture2DCompare(sampler2D depths, float2 uv, float compare){
+				float depth = tex2D(depths, uv).r;
+				//return step(compare, depth + 0.1);
+				return clamp(step(compare, depth + 0.1) + 0.5, 0, 1);
+			}
+
+			float PCF(sampler2D depths, float2 size, float2 uv, float compare) {
+				float result = 0.0;
+				for(int x=-8; x<=8; x++){
+					for(int y=-8; y<=8; y++){
+						float2 off = float2(x,y)/size;
+						result += texture2DCompare(depths, uv+off, compare);
+					}
+				}
+				return result/289.0;
+			}
+
 			// this function is based on Microsoft's function of the same purpose in their ShadowMapping example
 			float4 ShadowMapPS(VSOutput a_Input) : COLOR
 			{						
@@ -95,17 +113,24 @@
 				a_Input.projTex.x = 0.5 * a_Input.projTex.x + 0.5f; 
 				a_Input.projTex.y = 0.5 * a_Input.projTex.y + 0.5f;
 				
-				// Compute pixel depth for shadowing
-				//float depth = a_Input.projTex.z / a_Input.projTex.w;
-				
-				//float sceneDepth = abs(LinearEyeDepth (depth));
-
-				//float shMapDepth = Linear01Depth (tex2D(_ShadowMap, a_Input.projTex.xy));
 				float shMapDepth = tex2D(_ShadowMap, a_Input.projTex.xy);
 
-				//return (shMapDepth > 15) ? float4(0,0,0,0) : float4(1,0,0,0);
+				// Transform to texel space
+			    float2 texelpos = _TexSize * a_Input.projTex.xy;
+			        
+			    // Determine the lerp amounts.           
+			    float2 lerps = frac( texelpos );
 
-				float shadowCoeff = (shMapDepth < a_Input.eyeDepth) ? 0.5f : 1.0f;
+			    // sample shadow map
+			    float dx = 1.0f / _TexSize;
+				float s0 = (tex2D(_ShadowMap, a_Input.projTex.xy) + _Bias < a_Input.eyeDepth) ? 0.0f : 1.0f;
+				float s1 = (tex2D(_ShadowMap, a_Input.projTex.xy + float2(dx, 0.0f)) + _Bias < a_Input.eyeDepth) ? 0.0f : 1.0f;
+				float s2 = (tex2D(_ShadowMap, a_Input.projTex.xy + float2(0.0f, dx)) + _Bias  < a_Input.eyeDepth) ? 0.0f : 1.0f;
+				float s3 = (tex2D(_ShadowMap, a_Input.projTex.xy + float2(dx, dx)) + _Bias  < a_Input.eyeDepth) ? 0.0f : 1.0f;
+				
+				//float shadowCoeff = lerp( lerp( s0, s1, lerps.x ), lerp( s2, s3, lerps.x ), lerps.y );
+
+				float shadowCoeff = PCF(_ShadowMap, _TexSize, a_Input.projTex.xy, a_Input.eyeDepth);
 				
 				// output colour multipled by shadow value
 				return float4(shadowCoeff * a_Input.col.rgb, g_vecMaterialDiffuse.a);

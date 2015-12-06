@@ -18,7 +18,7 @@ public class ShadowMap : MonoBehaviour
         {
             foreach (Camera cam in Camera.allCameras)
             {
-                if (cam.name == "Camera")
+                if (cam.name == "LightCamera")
                     lightCam = cam;
             }
         }
